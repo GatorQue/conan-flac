@@ -1,0 +1,26 @@
+PROJECT(MyHello)
+cmake_minimum_required(VERSION 2.8)
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+CONAN_BASIC_SETUP()
+
+find_package(FLAC)
+find_package(FLAC++)
+
+if(FLAC_FOUND)
+    add_executable(testpkg testpkg.c)
+    target_include_directories(testpkg PRIVATE ${FLAC_INCLUDE_DIR})
+    target_compile_definitions(testpkg PRIVATE ${FLAC_DEFINITIONS})
+    target_link_libraries(testpkg ${FLAC_LIBRARIES})
+else()
+    message(FATAL_ERROR "FLAC not found")
+endif()
+
+if(FLAC++_FOUND)
+    add_executable(testpkg++ testpkg.cpp)
+    target_include_directories(testpkg++ PRIVATE ${FLAC++_INCLUDE_DIR})
+    target_compile_definitions(testpkg++ PRIVATE ${FLAC++_DEFINITIONS})
+    target_link_libraries(testpkg++ ${FLAC++_LIBRARIES})
+else()
+    message(FATAL_ERROR "FLAC++ not found")
+endif()
